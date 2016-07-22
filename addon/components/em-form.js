@@ -49,6 +49,9 @@ export default Ember.Component.extend({
   showErrorsOnRender: false,
   showErrorsOnFocusIn: false,
   showErrorsOnSubmit: true,
+  errors: Ember.computed.filter('model.errors', function(error, index, array) {
+    return error.message.source.pointer == "/data";
+  }),
 
   /*
   Form submit
