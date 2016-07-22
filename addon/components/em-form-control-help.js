@@ -29,11 +29,15 @@ export default Ember.Component.extend(InFormMixin, {
   }),
   init() {
     this._super(...arguments);
-    Ember.defineProperty(this, 'errors', Ember.computed.alias((`mainComponent.model.errors.${this.get('mainComponent.propertyName')}`)));
+    Ember.defineProperty(this, 'errors', Ember.computed.filter('mainComponent.model.errors', function(error, index, array) {
+      var nameSplit = error.message.source.pointer.split('/');
+      var name = nameSplit[nameSplit.length - 1];
+      return name == this.get('mainComponent.propertyName');
+    }));
   },
   helpText: Ember.computed('text', 'errors.firstObject', {
     get: function() {
-      return this.get('errors.firstObject.message') || this.get('errors.firstObject') || this.get('text');
+      return this.get('errors.firstObject.message.detail') || this.get('errors.firstObject') || this.get('text');
     }
   }),
   hasHelp: Ember.computed('helpText', {

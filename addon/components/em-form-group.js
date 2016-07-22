@@ -45,7 +45,7 @@ export default Ember.Component.extend(InFormMixin, HasPropertyMixin, HasProperty
   hasWarning: Ember.computed('status', 'canShowErrors', {
     get: function() {
       var warning;
-      warning = this.get('validations') && this.get('status') === 'warning' && this.get('canShowErrors');
+      warning = this.get('errors') && this.get('status') === 'warning' && this.get('canShowErrors');
       this.set('warning', warning);
       return warning;
     }
@@ -53,7 +53,7 @@ export default Ember.Component.extend(InFormMixin, HasPropertyMixin, HasProperty
   hasError: Ember.computed('status', 'canShowErrors', {
     get: function() {
       var error;
-      error = this.get('validations') && this.get('status') === 'error' && this.get('canShowErrors');
+      error = this.get('errors') && this.get('status') === 'error' && this.get('canShowErrors');
       this.set('error', error);
       return error;
     }
@@ -93,7 +93,7 @@ export default Ember.Component.extend(InFormMixin, HasPropertyMixin, HasProperty
   }),
   helpText: Ember.computed('text', 'errors.firstObject', {
     get: function() {
-      return this.get('errors.firstObject.message') || this.get('errors.firstObject') || this.get('text');
+      return this.get('errors.firstObject.message.detail') || this.get('errors.firstObject') || this.get('text');
     }
   }),
   init() {
