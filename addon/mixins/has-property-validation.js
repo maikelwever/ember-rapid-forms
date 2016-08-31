@@ -11,11 +11,13 @@ export default Ember.Mixin.create({
   init: function() {
     this._super(...arguments);
     Ember.assert(!Ember.isNone(this.get('propertyName')), 'propertyName is required.');
-    Ember.defineProperty(this, 'errors', Ember.computed.filter('model.errors', function(error, index, array) {
+    Ember.defineProperty(this, 'serversideErrors', Ember.computed.filter('model.errors', function(error, index, array) {
       var nameSplit = error.message.source.pointer.split('/');
       var name = nameSplit[nameSplit.length - 1];
       return name == this.get('propertyName');
     }));
+    Ember.defineProperty(this, 'errors', Ember.computed.union('serversideErrors',
+        `model.validations.${this.get('propertyName')}.messages`));
   },
   status: Ember.computed('errors.length', 'form.isSubmitted', {
     get: function() {

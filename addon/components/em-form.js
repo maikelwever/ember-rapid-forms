@@ -49,9 +49,11 @@ export default Ember.Component.extend({
   showErrorsOnRender: false,
   showErrorsOnFocusIn: false,
   showErrorsOnSubmit: true,
-  errors: Ember.computed.filter('model.errors', function(error, index, array) {
+  serversideErrors: Ember.computed.filter('model.errors', function(error, index, array) {
     return error.message.source.pointer == "/data";
   }),
+
+  errors: Ember.computed.union('serversideErrors', 'model.validations.messages'),
 
   /*
   Form submit
