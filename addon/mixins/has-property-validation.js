@@ -17,7 +17,7 @@ export default Ember.Mixin.create({
       return name == this.get('propertyName');
     }));
     Ember.defineProperty(this, 'errors', Ember.computed.union('serversideErrors',
-        `model.validations.${this.get('propertyName')}.messages`));
+        `model.validations.attrs.${this.get('propertyName')}.messages`));
   },
   status: Ember.computed('errors.length', 'form.isSubmitted', {
     get: function() {

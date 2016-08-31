@@ -2,7 +2,7 @@
   <div class="alert alert-warning">
     <ul>
       {{#each errors as |error|}}
-        <li>{{ error.message.detail }}</li>
+        <li>{{#if error.message.detail}}{{ error.message.detail }}{{else}}{{error}}{{/if}}</li>
       {{/each}}
     </ul>
   </div>

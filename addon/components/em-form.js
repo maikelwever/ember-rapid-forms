@@ -49,11 +49,9 @@ export default Ember.Component.extend({
   showErrorsOnRender: false,
   showErrorsOnFocusIn: false,
   showErrorsOnSubmit: true,
-  serversideErrors: Ember.computed.filter('model.errors', function(error, index, array) {
+  errors: Ember.computed.filter('model.errors', function(error, index, array) {
     return error.message.source.pointer == "/data";
   }),
-
-  errors: Ember.computed.union('serversideErrors', 'model.validations.messages'),
 
   /*
   Form submit
@@ -61,22 +59,9 @@ export default Ember.Component.extend({
   Optionally execute model validations and perform a form submission.
    */
   submit(e) {
-    var promise;
     if (e) {
       e.preventDefault();
     }
-    if (Ember.isNone(this.get('model.validate'))) {
-      return this.sendAction('action', this.get('model'));
-    } else {
-      promise = this.get('model').validate();
-      return promise.then((function(_this) {
-        _this.set('isSubmitted', true);
-        return function() {
-          if (_this.get('model.isValid')) {
-            return _this.sendAction('action', _this.get('model'));
-          }
-        };
-      })(this)).catch(function(){});
-    }
+    return this.sendAction('action', this.get('model'));
   }
 });
